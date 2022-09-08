@@ -40,6 +40,12 @@ const saveNote = (note) =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(note),
+  }).then(() => {
+    const timeout = setTimeout(function(){
+        location.reload();
+        clearTimeout(timeout);
+  }, 200); 
+
   });
 
 const deleteNote = (id) =>
@@ -48,7 +54,13 @@ const deleteNote = (id) =>
     headers: {
       'Content-Type': 'application/json',
     },
-  });
+  }).then(() => {
+    const timeout = setTimeout(function(){
+        location.reload();
+        clearTimeout(timeout);
+  }, 200); 
+
+})
 
 const renderActiveNote = () => {
   hide(saveNoteBtn);

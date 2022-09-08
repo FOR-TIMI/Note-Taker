@@ -28,8 +28,9 @@ app.get('/api/notes',(req,res) => {
 app.post('/api/notes',(req,res) => {
    const userNote = {...req.body, id: uuid()}
    const newNotes = JSON.stringify([...notesDatabase, userNote ])
-    fs.writeFile(path.join(__dirname,'./db/db.json'),newNotes, err => {
+    fs.writeFile(path.join(__dirname,'/db/db.json'),newNotes, err => {
        if(err) throw new Error('Could not update the file',err)
+       res.redirect(req.get('notes'))
     } )
 })
 
@@ -40,10 +41,12 @@ app.delete('/api/notes/:id',(req,res) => {
     const newNotes = JSON.stringify(notesDatabase.filter(note => note.id !== id ))
     fs.writeFile(path.join(__dirname,'./db/db.json'),newNotes, err => {
        if(err) throw new Error('Could not update the file',err)
+       res.redirect('/notes')
     })
 
 
 })
+
 
 
 //To start my server
