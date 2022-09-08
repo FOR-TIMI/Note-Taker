@@ -47,6 +47,10 @@ app.delete('/api/notes/:id',(req,res) => {
 
 })
 
+app.get('*',(req,res)=> {
+    res.sendFile('index.html',{root: path.join(__dirname, 'public')})
+} )
+
 
 
 //To start my server
