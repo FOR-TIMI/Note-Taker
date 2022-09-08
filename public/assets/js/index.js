@@ -44,7 +44,7 @@ const saveNote = (note) =>
     const timeout = setTimeout(function(){
         location.reload();
         clearTimeout(timeout);
-  }, 200); 
+  }, 350); 
 
   });
 
@@ -58,7 +58,7 @@ const deleteNote = (id) =>
     const timeout = setTimeout(function(){
         location.reload();
         clearTimeout(timeout);
-  }, 200); 
+  }, 350); 
 
 })
 
