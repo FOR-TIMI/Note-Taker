@@ -29,17 +29,26 @@ app.get('/api/notes',(req,res) => {
     })
 })
 
-
 //To add a note
 app.post('/api/notes',(req,res) => {
    const userNote = {...req.body, id: uuid()}
-   const newNotes = JSON.stringify([...notesDatabase, userNote ]);
+//    const newNotes = JSON.stringify([...notesDatabase, userNote ]);
+ let newNotes
 
-    fs.writeFile(path.join(__dirname,'/db/db.json'),newNotes, err => {
+
+   let oldNnotes
+   fs.readFile(path.join(__dirname,'./db/db.json'), 'utf8', (err,data) => {
+       if(err) throw err;
+    
+       oldNnotes = JSON.parse(data)
+       newNotes = JSON.stringify([...oldNnotes, userNote])
+     fs.writeFile(path.join(__dirname,'/db/db.json'),newNotes, err => {
        if(err) throw new Error('Could not update the file',err)
        res.redirect(req.get('notes'))
     } )
 })
+})
+
 
 //To delete a note
 app.delete('/api/notes/:id',(req,res) => {
@@ -62,19 +71,17 @@ app.delete('/api/notes/:id',(req,res) => {
             res.redirect('/notes')
          })
     })
-
-
 })
+
+
 
 
 app.get('*',(req,res)=> {
     res.sendFile('index.html',{root: path.join(__dirname, 'public')})
-} )
+})
 
 
 //To start my server
 app.listen(portNumber, ()=> {
     console.log(`Listening on port ${portNumber}`)
 })
-
-
