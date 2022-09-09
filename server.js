@@ -18,16 +18,23 @@ app.get('/notes',(req,res) => {
     res.sendFile('notes.html',{root: path.join(__dirname, 'public')})
 })
 
+
+
+
 //To get all notes
 app.get('/api/notes',(req,res) => {
-    res.json(notesDatabase)
+    fs.readFile(path.join(__dirname,'./db/db.json'), 'utf8', (err,data) => {
+        if(err) throw err;
+        res.json(JSON.parse(data))
+    })
 })
 
 
 //To add a note
 app.post('/api/notes',(req,res) => {
    const userNote = {...req.body, id: uuid()}
-   const newNotes = JSON.stringify([...notesDatabase, userNote ])
+   const newNotes = JSON.stringify([...notesDatabase, userNote ]);
+
     fs.writeFile(path.join(__dirname,'/db/db.json'),newNotes, err => {
        if(err) throw new Error('Could not update the file',err)
        res.redirect(req.get('notes'))
@@ -47,10 +54,10 @@ app.delete('/api/notes/:id',(req,res) => {
 
 })
 
+
 app.get('*',(req,res)=> {
     res.sendFile('index.html',{root: path.join(__dirname, 'public')})
 } )
-
 
 
 //To start my server
