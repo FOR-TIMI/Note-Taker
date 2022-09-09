@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const portNumber = process.env.PORT || 3001;
-const notesDatabase = require('./db/db.json');
 const fs = require('fs');
 const path = require('path');
 const { v4: uuid } = require('uuid');
@@ -13,12 +12,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 //To Parse request body
 app.use(express.json());
 
-
+//To view all notes
 app.get('/notes',(req,res) => {
     res.sendFile('notes.html',{root: path.join(__dirname, 'public')})
 })
-
-
 
 
 //To get all notes
@@ -74,8 +71,7 @@ app.delete('/api/notes/:id',(req,res) => {
 })
 
 
-
-
+//Fall back route
 app.get('*',(req,res)=> {
     res.sendFile('index.html',{root: path.join(__dirname, 'public')})
 })
