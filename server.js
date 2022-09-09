@@ -50,8 +50,6 @@ app.delete('/api/notes/:id',(req,res) => {
        if(err) throw new Error('Could not update the file',err)
        res.redirect('/notes')
     })
-
-
 })
 
 
