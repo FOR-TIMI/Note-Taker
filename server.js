@@ -45,11 +45,25 @@ app.post('/api/notes',(req,res) => {
 app.delete('/api/notes/:id',(req,res) => {
     const {id} = req.params;
     
-    const newNotes = JSON.stringify(notesDatabase.filter(note => note.id !== id ))
-    fs.writeFile(path.join(__dirname,'./db/db.json'),newNotes, err => {
-       if(err) throw new Error('Could not update the file',err)
-       res.redirect('/notes')
+    // const newNotes = JSON.stringify(notesDatabase.filter(note => note.id !== id ))
+    // fs.writeFile(path.join(__dirname,'./db/db.json'),newNotes, err => {
+    //    if(err) throw new Error('Could not update the file',err)
+    //    res.redirect('/notes')
+    // })
+    let newNotes
+    let oldNnotes
+    fs.readFile(path.join(__dirname,'./db/db.json'), 'utf8', (err,data) => {
+        if(err) throw err;
+        oldNnotes = JSON.parse(data)
+        newNotes = JSON.stringify(oldNnotes.filter(note => note.id !== id ))
+         
+        fs.writeFile(path.join(__dirname,'./db/db.json'),newNotes, err => {
+            if(err) throw new Error('Could not update the file',err)
+            res.redirect('/notes')
+         })
     })
+
+
 })
 
 
